@@ -1,0 +1,46 @@
+// createTable
+var params = {
+    TableName: 'entry',
+    KeySchema: [{ AttributeName: 'categoryID', KeyType: 'HASH' }],
+    AttributeDefinitions: [{  AttributeName: 'categoryID', AttributeType: 'S', }],
+    ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1, }
+};
+
+dynamodb.createTable(params, function(err, data) {
+    if (err) ppJson(err);
+    else ppJson(data);
+
+});
+
+// Insert items
+echo '{"categoryID": "Drink", "description": "Wine", "amount": "-10", "balance": "0", "date": "2022-01-01"}' | http :8080/entryResource
+echo '{"categoryID": "Food", "description": "Shrimp", "amount": "-20", "balance": "0", "date": "2022-02-01"}' | http :8080/entryResource
+echo '{"categoryID": "Car", "description": "Flat tires", "amount": "-200", "balance": "0", "date": "2022-03-01"}' | http :8080/entryResource
+echo '{"categoryID": "Payslip", "description": "Income", "amount": "2000", "balance": "0", "date": "2022-04-01"}' | http :8080/entryResource
+echo '{"categoryID": "Utilities", "description": "Gas", "amount": "-400", "balance": "0", "date": "2022-05-01"}' | http :8080/entryResource
+
+
+// find an item
+var params = {
+    TableName: 'entry',
+    Key: {
+        categoryID: 'Drink'
+    }
+};
+docClient.get(params, function(err, data) {
+    if (err) ppJson(err); // an error occurred
+    else ppJson(data); // successful response
+});
+
+// Delete an item
+var params = {
+    TableName: 'entry',
+    Key: { // a map of attribute name to AttributeValue for all primary key attributes
+    
+        categoryID: 'Drink'
+    }
+}
+docClient.delete(params, function(err, data) {
+    if (err) ppJson(err); // an error occurred
+    else ppJson(data); // successful response
+});
