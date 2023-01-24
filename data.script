@@ -41,7 +41,7 @@ aws dynamodb --endpoint-url http://localhost:8000 create-table \
 }
 
 // Verify the table
-aws dynamodb describe-table --table-name entry --endpoint-url http://localhost:8000 | grep TableStatus
+aws dynamodb --endpoint-url http://localhost:8000 describe-table --table-name entry | grep TableStatus
 
 // Output
         "TableStatus": "ACTIVE",
@@ -65,6 +65,10 @@ docClient.get(params, function(err, data) {
     if (err) ppJson(err); // an error occurred
     else ppJson(data); // successful response
 });
+
+aws dynamodb --endpoint-url http://localhost:8000 get-item --consistent-read \
+    --table-name entry \
+    --key '{ "categoryID": {"S": "Drink"}}'
 
 // Delete an item
 var params = {
