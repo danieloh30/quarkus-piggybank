@@ -9,37 +9,6 @@ aws dynamodb --endpoint-url http://localhost:8000 create-table \
         ReadCapacityUnits=5,WriteCapacityUnits=5 \
     --table-class STANDARD
 
-// Output
-{
-    "TableDescription": {
-        "AttributeDefinitions": [
-            {
-                "AttributeName": "categoryID",
-                "AttributeType": "S"
-            }
-        ],
-        "TableName": "entry",
-        "KeySchema": [
-            {
-                "AttributeName": "categoryID",
-                "KeyType": "HASH"
-            }
-        ],
-        "TableStatus": "ACTIVE",
-        "CreationDateTime": "2023-01-23T08:54:22.356000-05:00",
-        "ProvisionedThroughput": {
-            "LastIncreaseDateTime": "1969-12-31T19:00:00-05:00",
-            "LastDecreaseDateTime": "1969-12-31T19:00:00-05:00",
-            "NumberOfDecreasesToday": 0,
-            "ReadCapacityUnits": 5,
-            "WriteCapacityUnits": 5
-        },
-        "TableSizeBytes": 0,
-        "ItemCount": 0,
-        "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/entry"
-    }
-}
-
 // Verify the table
 aws dynamodb --endpoint-url http://localhost:8000 describe-table --table-name entry | grep TableStatus
 
@@ -61,34 +30,6 @@ curl -X POST http://localhost:8080/entryResource -H 'Content-Type: application/j
 
 
 // find an item
-var params = {
-    TableName: 'entry',
-    Key: {
-        categoryID: 'Drink'
-    }
-};
-docClient.get(params, function(err, data) {
-    if (err) ppJson(err); // an error occurred
-    else ppJson(data); // successful response
-});
-
-aws dynamodb --endpoint-url http://localhost:8000 get-item --consistent-read \
-    --table-name entry \
-    --key '{ "categoryID": {"S": "Drink"}}'
-
-// Delete an item
-var params = {
-    TableName: 'entry',
-    Key: { // a map of attribute name to AttributeValue for all primary key attributes
-    
-        categoryID: 'Food'
-    }
-}
-docClient.delete(params, function(err, data) {
-    if (err) ppJson(err); // an error occurred
-    else ppJson(data); // successful response
-});
-
 aws dynamodb --endpoint-url http://localhost:8000 delete-item \
     --table-name entry \
     --key '{ "categoryID": {"S": "Food"}}'
