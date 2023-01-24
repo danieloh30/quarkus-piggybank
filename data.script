@@ -53,6 +53,12 @@ echo '{"categoryID": "Car", "description": "Flat tires", "amount": "-200", "bala
 echo '{"categoryID": "Payslip", "description": "Income", "amount": "2000", "balance": "0", "date": "2023-04-01"}' | http :8080/entryResource
 echo '{"categoryID": "Utilities", "description": "Gas", "amount": "-400", "balance": "0", "date": "2023-05-01"}' | http :8080/entryResource
 
+curl -X POST http://localhost:8080/entryResource -H 'Content-Type: application/json' -d '{"categoryID": "Drink", "description": "Wine", "amount": "-10", "balance": "0", "date": "2023-01-01"}'
+curl -X POST http://localhost:8080/entryResource -H 'Content-Type: application/json' -d '{"categoryID": "Food", "description": "Shrimp", "amount": "-20", "balance": "0", "date": "2023-02-01"}'
+curl -X POST http://localhost:8080/entryResource -H 'Content-Type: application/json' -d '{"categoryID": "Car", "description": "Flat tires", "amount": "-200", "balance": "0", "date": "2023-03-01"}'
+curl -X POST http://localhost:8080/entryResource -H 'Content-Type: application/json' -d '{"categoryID": "Payslip", "description": "Income", "amount": "2000", "balance": "0", "date": "2023-04-01"}'
+curl -X POST http://localhost:8080/entryResource -H 'Content-Type: application/json' -d '{"categoryID": "Utilities", "description": "Gas", "amount": "-400", "balance": "0", "date": "2023-05-01"}'
+
 
 // find an item
 var params = {
@@ -75,10 +81,17 @@ var params = {
     TableName: 'entry',
     Key: { // a map of attribute name to AttributeValue for all primary key attributes
     
-        categoryID: 'Drink'
+        categoryID: 'Food'
     }
 }
 docClient.delete(params, function(err, data) {
     if (err) ppJson(err); // an error occurred
     else ppJson(data); // successful response
 });
+
+aws dynamodb --endpoint-url http://localhost:8000 delete-item \
+    --table-name entry \
+    --key '{ "categoryID": {"S": "Food"}}'
+
+// Delete a table
+aws dynamodb --endpoint-url http://localhost:8000 delete-table --table-name entry
