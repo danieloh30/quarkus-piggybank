@@ -1,23 +1,57 @@
 // createTable
-var params = {
-    TableName: 'entry',
-    KeySchema: [{ AttributeName: 'categoryID', KeyType: 'HASH' }],
-    AttributeDefinitions: [{  AttributeName: 'categoryID', AttributeType: 'S', }],
-    ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1, }
-};
+aws dynamodb --endpoint-url http://localhost:8000 create-table \
+    --table-name entry \
+    --attribute-definitions \
+        AttributeName=categoryID,AttributeType=S \
+    --key-schema \
+        AttributeName=categoryID,KeyType=HASH \
+    --provisioned-throughput \
+        ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --table-class STANDARD
 
-dynamodb.createTable(params, function(err, data) {
-    if (err) ppJson(err);
-    else ppJson(data);
+// Output
+{
+    "TableDescription": {
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "categoryID",
+                "AttributeType": "S"
+            }
+        ],
+        "TableName": "entry",
+        "KeySchema": [
+            {
+                "AttributeName": "categoryID",
+                "KeyType": "HASH"
+            }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2023-01-23T08:54:22.356000-05:00",
+        "ProvisionedThroughput": {
+            "LastIncreaseDateTime": "1969-12-31T19:00:00-05:00",
+            "LastDecreaseDateTime": "1969-12-31T19:00:00-05:00",
+            "NumberOfDecreasesToday": 0,
+            "ReadCapacityUnits": 5,
+            "WriteCapacityUnits": 5
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/entry"
+    }
+}
 
-});
+// Verify the table
+aws dynamodb describe-table --table-name entry --endpoint-url http://localhost:8000 | grep TableStatus
+
+// Output
+        "TableStatus": "ACTIVE",
 
 // Insert items
-echo '{"categoryID": "Drink", "description": "Wine", "amount": "-10", "balance": "0", "date": "2022-01-01"}' | http :8080/entryResource
-echo '{"categoryID": "Food", "description": "Shrimp", "amount": "-20", "balance": "0", "date": "2022-02-01"}' | http :8080/entryResource
-echo '{"categoryID": "Car", "description": "Flat tires", "amount": "-200", "balance": "0", "date": "2022-03-01"}' | http :8080/entryResource
-echo '{"categoryID": "Payslip", "description": "Income", "amount": "2000", "balance": "0", "date": "2022-04-01"}' | http :8080/entryResource
-echo '{"categoryID": "Utilities", "description": "Gas", "amount": "-400", "balance": "0", "date": "2022-05-01"}' | http :8080/entryResource
+echo '{"categoryID": "Drink", "description": "Wine", "amount": "-10", "balance": "0", "date": "2023-01-01"}' | http :8080/entryResource
+echo '{"categoryID": "Food", "description": "Shrimp", "amount": "-20", "balance": "0", "date": "2023-02-01"}' | http :8080/entryResource
+echo '{"categoryID": "Car", "description": "Flat tires", "amount": "-200", "balance": "0", "date": "2023-03-01"}' | http :8080/entryResource
+echo '{"categoryID": "Payslip", "description": "Income", "amount": "2000", "balance": "0", "date": "2023-04-01"}' | http :8080/entryResource
+echo '{"categoryID": "Utilities", "description": "Gas", "amount": "-400", "balance": "0", "date": "2023-05-01"}' | http :8080/entryResource
 
 
 // find an item
