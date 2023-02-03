@@ -24,24 +24,27 @@ public class EntryResource {
     }
 
     @GET
-    @Path("/find/{categoryID}")
-    public Entry findByCategoryID(String categoryID) {
-        return eService.findByCategoryID(categoryID);
+    @Path("/find/{expenseID}")
+    public Entry findByExpenseID(String expenseID) {
+        return eService.findByExpenseID(expenseID);
     }
 
     @POST
     public void addEntry(Entry entry) throws Exception {
-        // TODO: Add a method to calculate the Balance
+        // TODO: Invoke the calculateBalance method
         entry.setBalance(calculateBalance(entry.getAmount()));
+    
         eService.addEntry(entry);
     }
 
+    // TODO: Add a method to calculate the Balance
     public String calculateBalance(String amount) {
         final BigDecimal[] balance = {new BigDecimal(amount)};
         eService.findAll().forEach(entry -> {
             balance[0] = balance[0].add(BigDecimal.valueOf(Double.valueOf(entry.getAmount())).setScale(0));
         });
         return balance[0].toString();
-    }
+        }
+
     
 }

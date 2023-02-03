@@ -22,8 +22,8 @@ public class EntryService extends AbstractService {
                 .collect(Collectors.toList());
     }
 
-    public Entry findByCategoryID(String categoryID) {
-        return  Entry.from(dynamoDB.getItem(getRequest(categoryID)).item());
+    public Entry findByExpenseID(String expenseID) {
+        return  Entry.from(dynamoDB.getItem(getRequest(expenseID)).item());
 
     }
 

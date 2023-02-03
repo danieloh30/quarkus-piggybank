@@ -11,7 +11,7 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 @RegisterForReflection
 public class Entry {
 
-    public String categoryID;
+    public String expenseID;
     public String description;
     public String amount;
     public String balance;
@@ -22,22 +22,22 @@ public class Entry {
     public static Entry from(Map<String, AttributeValue> item) {
         Entry entry = new Entry();
         if (item != null && !item.isEmpty()) {
-            entry.setCategoryID(item.get(AbstractService.ENTRY_CATEGORYID_COL).s());
+            entry.setExpenseID(item.get(AbstractService.ENTRY_EXPENSEID_COL).s());
             entry.setDescription(item.get(AbstractService.ENTRY_DESCRIPTION_COL).s());
             entry.setAmount(item.get(AbstractService.ENTRY_AMOUNT_COL).s());
-            entry.setBalance(item.get(AbstractService.ENTRY_BALANCE_COL).s());  
+            entry.setBalance(item.get(AbstractService.ENTRY_BALANCE_COL).s());
             entry.setDate(item.get(AbstractService.ENTRY_DATE_COL).s());
 
         }
         return entry;
     }
 
-    public String getCategoryID() {
-        return this.categoryID;
+    public String getExpenseID() {
+        return this.expenseID;
     }
 
-    public void setCategoryID(String categoryID) {
-        this.categoryID = categoryID;
+    public void setExpenseID(String expenseID) {
+        this.expenseID = expenseID;
     }
 
     public String getDescription() {
@@ -80,16 +80,16 @@ public class Entry {
 
         Entry other = (Entry) obj;
 
-        return Objects.equals(other.categoryID, this.categoryID)
-            && Objects.equals(other.description, this.description)
-            && Objects.equals(other.amount, this.amount)
-            && Objects.equals(other.balance, this.balance)
-            && Objects.equals(other.date, this.date);
+        return Objects.equals(other.expenseID, this.expenseID)
+                && Objects.equals(other.description, this.description)
+                && Objects.equals(other.amount, this.amount)
+                && Objects.equals(other.balance, this.balance)
+                && Objects.equals(other.date, this.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.categoryID);
+        return Objects.hash(this.expenseID);
     }
 
 }
