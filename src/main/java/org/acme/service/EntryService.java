@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import io.quarkus.logging.Log;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class EntryService extends AbstractService {

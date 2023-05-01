@@ -3,15 +3,15 @@ package org.acme;
 import  org.acme.model.Entry;
 import  org.acme.service.EntryService;
 
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import io.quarkus.logging.Log;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+
 @Path("/entryResource")
 public class EntryResource {
     SimpleDateFormat piggyDateFormatter = new SimpleDateFormat("yyyy-MM-dd+HH:mm");
@@ -75,6 +75,11 @@ public class EntryResource {
     }
 
     public BigDecimal calculateBalance(BigDecimal amount) {
-      
+        final BigDecimal[] balance = {amount};
+        eService.findAll().forEach(entry -> {
+            balance[0] = balance[0].add(entry.getAmount());
+        });
+        return balance[0];
     }
+
 }
